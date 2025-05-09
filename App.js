@@ -1,68 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Avatar, Badge, Icon, ListItem } from 'react-native-elements';
 
-const mensagens = [
-  {
-    id: '1',
-    nome: 'Taylor Swift',
-    mensagem: 'Faça mais do que ama.',
-    tempo: 'Há 3 min',
-    naoLidas: 3,
-    avatar: 'https://recreio.com.br/media/_versions/2025/05/gettyimages-2166943469_capa_widelg.jpg',
-  },
-  {
-    id: '2',
-    nome: 'Samuel Mariano',
-    mensagem: 'Você é capaz. Deus abençoe!',
-    tempo: 'Há 5 min',
-    naoLidas: 1,
-    avatar: 'https://akamai.sscdn.co/uploadfile/letras/fotos/0/4/0/4/0404a6861751cfb03c647f4c8bcd2aa9.jpg',
-  },
-  {
-    id: '3',
-    nome: 'Sabrina Carpenter',
-    mensagem: 'Gentileza é linda.',
-    tempo: 'Há 1h',
-    naoLidas: 2,
-    avatar: 'https://p2.trrsf.com/image/fget/cf/774/0/images.terra.com/2024/07/18/516965782-sabrina-carpenter-anuncia-turne-pela-europa-em-2025.png',
-  },
-  {
-    id: '4',
-    nome: 'Shakira',
-    mensagem: 'Viva seu propósito.',
-    tempo: 'Há 2h',
-    naoLidas: 1,
-    avatar: 'https://upload.wikimedia.org/wikipedia/commons/b/b8/2023-11-16_Gala_de_los_Latin_Grammy%2C_03_%28cropped%2902.jpg',
-  },
-  {
-    id: '5',
-    nome: 'Larissa Manoela (Milho)',
-    mensagem: 'Você consegue.',
-    tempo: 'Há 5h',
-    naoLidas: 0,
-    avatar: 'https://s2.glbimg.com/2LPPXAo3wa_VRQxiXkMt0DMC1zk=/640x424/i.glbimg.com/og/ig/infoglobo/f/original/2022/02/21/larissa-2.jpg',
-  },
-  {
-    id: '6',
-    nome: 'Rihanna',
-    mensagem: 'Você é incrível.',
-    tempo: 'Ontem',
-    naoLidas: 0,
-    avatar: 'https://akamai.sscdn.co/tb/letras-news/wp-content/uploads/2025/05/3777125-rihanna-met-gala-1024x844.jpg',
-  },
-  {
-    id: '7',
-    nome: 'Chico Kin',
-    mensagem: 'Mantenha simples.',
-    tempo: 'Ontem',
-    naoLidas: 0,
-    avatar: 'https://img.a.transfermarkt.technology/portrait/big/349166-1661911119.jpg?lm=1',
-  },
-];
-
 export default function App() {
+  const [mensagens, setMensagens] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/mensagens')
+      .then(response => response.json())
+      .then(data => setMensagens(data))
+      .catch(error => console.error('Erro ao buscar dados:', error));
+  }, []);
+
   const renderizarItem = ({ item }) => (
     <ListItem bottomDivider>
       <Avatar rounded source={{ uri: item.avatar }} />
